@@ -1,0 +1,6 @@
+pandas>=2.2
+requests>=2.32
+scipy>=1.13
+scikit-learn==1.9.1
+fastapi>=0.115
+uvicorn[standard]>=0.30

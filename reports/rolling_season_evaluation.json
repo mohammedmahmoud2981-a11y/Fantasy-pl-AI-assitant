@@ -1,0 +1,112 @@
+{
+  "created_at_utc": "2026-11-22T04:03:53.292478+00:00",
+  "method": "expanding-window chronological evaluation",
+  "target": "target_points_next_gw",
+  "folds": [
+    {
+      "evaluation_season": "2022-23",
+      "training_seasons": [
+        "2016-17",
+        "2017-18",
+        "2018-19",
+        "2019-20",
+        "2020-21",
+        "2021-22"
+      ],
+      "model": {
+        "mae": 1.1003,
+        "rmse": 2.0892,
+        "r2": 0.2703,
+        "rows": 25559
+      },
+      "last_3_gameweeks_baseline": {
+        "mae": 1.1718,
+        "rmse": 2.3354,
+        "r2": 0.0882,
+        "rows": 25559
+      },
+      "improved_mae": true
+    },
+    {
+      "evaluation_season": "2023-24",
+      "training_seasons": [
+        "2016-17",
+        "2017-18",
+        "2018-19",
+        "2019-20",
+        "2020-21",
+        "2021-22",
+        "2022-23"
+      ],
+      "model": {
+        "mae": 0.9963,
+        "rmse": 1.9979,
+        "r2": 0.276,
+        "rows": 28812
+      },
+      "last_3_gameweeks_baseline": {
+        "mae": 1.0323,
+        "rmse": 2.2009,
+        "r2": 0.1214,
+        "rows": 28812
+      },
+      "improved_mae": true
+    },
+    {
+      "evaluation_season": "2024-25",
+      "training_seasons": [
+        "2016-17",
+        "2017-18",
+        "2018-19",
+        "2019-20",
+        "2020-21",
+        "2021-22",
+        "2022-23",
+        "2023-24"
+      ],
+      "model": {
+        "mae": 1.03,
+        "rmse": 1.9745,
+        "r2": 0.2926,
+        "rows": 26495
+      },
+      "last_3_gameweeks_baseline": {
+        "mae": 1.0806,
+        "rmse": 2.2024,
+        "r2": 0.1199,
+        "rows": 26495
+      },
+      "improved_mae": true
+    },
+    {
+      "evaluation_season": "2025-26",
+      "training_seasons": [
+        "2016-17",
+        "2017-18",
+        "2018-19",
+        "2019-20",
+        "2020-21",
+        "2021-22",
+        "2022-23",
+        "2023-24",
+        "2024-25"
+      ],
+      "model": {
+        "mae": 1.0016,
+        "rmse": 1.9722,
+        "r2": 0.3107,
+        "rows": 28906
+      },
+      "last_3_gameweeks_baseline": {
+        "mae": 1.0602,
+        "rmse": 2.2039,
+        "r2": 0.1393,
+        "rows": 28906
+      },
+      "improved_mae": true
+    }
+  ],
+  "mean_model_mae": 1.032,
+  "mean_baseline_mae": 1.0862,
+  "folds_beating_baseline": 4
+}

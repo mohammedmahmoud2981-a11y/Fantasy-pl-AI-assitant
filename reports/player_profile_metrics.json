@@ -1,0 +1,64 @@
+{
+  "created_at_utc": "2026-11-22T04:00:45.576608+00:00",
+  "source_season": "2025-26",
+  "players": 441,
+  "features": [
+    "total_points",
+    "minutes",
+    "goals_scored",
+    "assists",
+    "clean_sheets",
+    "bonus",
+    "bps",
+    "expected_goals",
+    "expected_assists",
+    "expected_goals_conceded",
+    "value"
+  ],
+  "clusters": 3,
+  "silhouette_score": 0.3551,
+  "anomaly_count": 14,
+  "anomaly_contamination": 0.03,
+  "cluster_profiles": {
+    "0": {
+      "total_points": 146.94,
+      "minutes": 2531.26,
+      "goals_scored": 9.4,
+      "assists": 5.62,
+      "clean_sheets": 9.36,
+      "bonus": 17.08,
+      "bps": 574.62,
+      "expected_goals": 8.849,
+      "expected_assists": 3.895,
+      "expected_goals_conceded": 35.189,
+      "value": 73.58
+    },
+    "1": {
+      "total_points": 40.707,
+      "minutes": 949.409,
+      "goals_scored": 0.844,
+      "assists": 1.031,
+      "clean_sheets": 2.333,
+      "bonus": 1.876,
+      "bps": 155.671,
+      "expected_goals": 1.179,
+      "expected_assists": 0.748,
+      "expected_goals_conceded": 15.843,
+      "value": 49.533
+    },
+    "2": {
+      "total_points": 105.301,
+      "minutes": 2425.783,
+      "goals_scored": 2.054,
+      "assists": 2.524,
+      "clean_sheets": 7.53,
+      "bonus": 6.861,
+      "bps": 420.12,
+      "expected_goals": 2.119,
+      "expected_assists": 1.898,
+      "expected_goals_conceded": 37.221,
+      "value": 50.548
+    }
+  },
+  "caveat": "End-of-season descriptive player profiles; not a pre-deadline prediction or injury signal."
+}

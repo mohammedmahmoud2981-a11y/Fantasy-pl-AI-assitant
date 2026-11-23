@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "FantasyIQ",
+    "slug": "fantasyiq",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "fantasyiq",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#07111F",
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fantasyiq.mobile"
+    },
+    "android": {
+      "package": "com.fantasyiq.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#07111F",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "2deb3973-3c4a-427b-929a-97ef271c7e59"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2deb3973-3c4a-427b-929a-97ef271c7e59"
+    }
+  }
+}

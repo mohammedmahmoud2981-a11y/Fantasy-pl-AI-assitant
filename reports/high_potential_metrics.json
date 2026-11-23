@@ -1,0 +1,145 @@
+{
+  "created_at_utc": "2026-11-21T19:14:20.496751+00:00",
+  "definition": "High potential means target points at or above the training-set 75th percentile for the player's position.",
+  "thresholds_by_position_points": {
+    "DEF": 1.0,
+    "FWD": 2.0,
+    "GK": 1.0,
+    "MID": 2.0
+  },
+  "features": [
+    "position",
+    "gameweek",
+    "season_start_year",
+    "total_points_mean_3gw",
+    "total_points_mean_5gw",
+    "total_points_season_mean",
+    "minutes_mean_3gw",
+    "minutes_mean_5gw",
+    "minutes_season_mean",
+    "starts_mean_3gw",
+    "starts_mean_5gw",
+    "starts_season_mean",
+    "goals_scored_mean_3gw",
+    "goals_scored_mean_5gw",
+    "goals_scored_season_mean",
+    "assists_mean_3gw",
+    "assists_mean_5gw",
+    "assists_season_mean",
+    "clean_sheets_mean_3gw",
+    "clean_sheets_mean_5gw",
+    "clean_sheets_season_mean",
+    "saves_mean_3gw",
+    "saves_mean_5gw",
+    "saves_season_mean",
+    "bonus_mean_3gw",
+    "bonus_mean_5gw",
+    "bonus_season_mean",
+    "bps_mean_3gw",
+    "bps_mean_5gw",
+    "bps_season_mean",
+    "expected_goals_mean_3gw",
+    "expected_goals_mean_5gw",
+    "expected_goals_season_mean",
+    "expected_assists_mean_3gw",
+    "expected_assists_mean_5gw",
+    "expected_assists_season_mean",
+    "expected_goal_involvements_mean_3gw",
+    "expected_goal_involvements_mean_5gw",
+    "expected_goal_involvements_season_mean",
+    "expected_goals_conceded_mean_3gw",
+    "expected_goals_conceded_mean_5gw",
+    "expected_goals_conceded_season_mean",
+    "price_m",
+    "selected_managers",
+    "season_points_to_date",
+    "season_minutes_to_date",
+    "weeks_seen"
+  ],
+  "validation": {
+    "training_seasons": [
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24"
+    ],
+    "evaluation_seasons": [
+      "2024-25"
+    ],
+    "thresholds_by_position_points": {
+      "DEF": 1.0,
+      "FWD": 2.0,
+      "GK": 1.0,
+      "MID": 2.0
+    },
+    "metrics": {
+      "precision_at_0_5": 0.7355,
+      "recall_at_0_5": 0.6498,
+      "f1_at_0_5": 0.69,
+      "roc_auc": 0.9009,
+      "average_precision": 0.7542,
+      "positive_rate": 0.2906,
+      "rows": 26495
+    }
+  },
+  "final_test": {
+    "training_seasons": [
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "evaluation_seasons": [
+      "2025-26"
+    ],
+    "thresholds_by_position_points": {
+      "DEF": 1.0,
+      "FWD": 2.0,
+      "GK": 1.0,
+      "MID": 2.0
+    },
+    "metrics": {
+      "precision_at_0_5": 0.75,
+      "recall_at_0_5": 0.6724,
+      "f1_at_0_5": 0.7091,
+      "roc_auc": 0.9177,
+      "average_precision": 0.7706,
+      "positive_rate": 0.2769,
+      "rows": 28906
+    }
+  },
+  "current_season_diagnostic": {
+    "precision_at_0_5": 0.7697,
+    "recall_at_0_5": 0.7064,
+    "f1_at_0_5": 0.7367,
+    "roc_auc": 0.9037,
+    "average_precision": 0.7954,
+    "positive_rate": 0.3302,
+    "rows": 5890
+  },
+  "deployment_training_seasons": [
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "model": "LogisticRegression",
+  "model_path": "models\\high_potential_classifier.joblib",
+  "predictions_path": "reports\\high_potential_predictions.csv.gz",
+  "caveat": "The probability estimates the chance of reaching this historical, position-relative high-score threshold. It is not a calibrated probability of injury or guaranteed points."
+}
