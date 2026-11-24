@@ -1,0 +1,20 @@
+{
+  "created_at_utc": "2026-11-23T11:33:10.821881+00:00",
+  "test_season": "2024-25",
+  "rounds": "GW4-GW38; pre-deadline rolling three-gameweek history",
+  "sampled_queries": 1120,
+  "candidate_pool_mean_actual_points": 1.1273,
+  "methods": {
+    "hybrid": {
+      "mean_actual_points_at_5": 3.6455,
+      "share_of_top5_scoring_4plus": 0.3364,
+      "queries": 1120
+    },
+    "form_only": {
+      "mean_actual_points_at_5": 3.8179,
+      "share_of_top5_scoring_4plus": 0.3557,
+      "queries": 1120
+    }
+  },
+  "caveat": "This tests same-position replacement ranking on sampled outgoing players. Historical prices/team labels are imperfect and the metric is descriptive; rankings are not a causal transfer backtest."
+}

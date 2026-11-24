@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-21T19:14:20.496751+00:00",
+  "created_at_utc": "2026-11-23T11:31:56.035454+00:00",
   "definition": "High potential means target points at or above the training-set 75th percentile for the player's position.",
   "thresholds_by_position_points": {
     "DEF": 1.0,

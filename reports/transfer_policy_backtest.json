@@ -1,0 +1,74 @@
+{
+  "created_at_utc": "2026-11-23T11:34:27.203678+00:00",
+  "season": "2025-26",
+  "gameweeks_evaluated": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38
+  ],
+  "warmup_gameweeks": 3,
+  "policy": "Compare one-free-transfer-per-GW policies at minimum projected-gain thresholds; prior-three-GW only, 100m initial budget, cash bank and max three per club.",
+  "hold_initial_squad_points": 1823.0,
+  "one_transfer_policy_thresholds": {
+    "0.0": {
+      "points": 1734.0,
+      "transfers": 34,
+      "net_gain_vs_hold": -89.0
+    },
+    "0.5": {
+      "points": 1734.0,
+      "transfers": 34,
+      "net_gain_vs_hold": -89.0
+    },
+    "1.0": {
+      "points": 1734.0,
+      "transfers": 34,
+      "net_gain_vs_hold": -89.0
+    },
+    "1.5": {
+      "points": 1734.0,
+      "transfers": 34,
+      "net_gain_vs_hold": -89.0
+    },
+    "2.0": {
+      "points": 1734.0,
+      "transfers": 34,
+      "net_gain_vs_hold": -89.0
+    }
+  },
+  "weekly_reoptimization_points_before_hits": 1944.0,
+  "weekly_reoptimization_transfers": 280,
+  "caveat": "Only completed prior-round player outcomes determine projections. The source has imperfect historical price/club snapshots; price changes, chips, injuries/news and transfer-value rules are not fully reconstructed. Treat this as a diagnostic baseline, not an official FPL score reproduction."
+}

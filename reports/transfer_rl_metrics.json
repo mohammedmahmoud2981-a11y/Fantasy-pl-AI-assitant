@@ -1,0 +1,56 @@
+{
+  "created_at_utc": "2026-11-23T11:35:49.702902+00:00",
+  "folds": [
+    {
+      "training_seasons": [
+        "2022-23",
+        "2023-24"
+      ],
+      "test_season": "2024-25",
+      "rl": {
+        "points": 1657.0,
+        "transfers": 23
+      },
+      "projection_heuristic": {
+        "points": 1728.0,
+        "transfers": 34
+      },
+      "hold_initial_team": {
+        "points": 1786.0,
+        "transfers": 0
+      }
+    },
+    {
+      "training_seasons": [
+        "2022-23",
+        "2023-24",
+        "2024-25"
+      ],
+      "test_season": "2025-26",
+      "rl": {
+        "points": 1731.0,
+        "transfers": 34
+      },
+      "projection_heuristic": {
+        "points": 1870.0,
+        "transfers": 34
+      },
+      "hold_initial_team": {
+        "points": 1757.0,
+        "transfers": 0
+      }
+    }
+  ],
+  "agent": "tabular Q-learning: action 0 keep; actions 1-3 choose among the three highest projected-gain legal same-position swaps; reward is incoming minus outgoing actual GW points.",
+  "state": [
+    "season phase",
+    "projected gain bucket",
+    "bank bucket"
+  ],
+  "episodes_per_training_season": 30,
+  "caveats": [
+    "The candidate set is limited to the three highest-projection same-position swaps; this remains a prototype, not a full transfer-action policy.",
+    "Historical price and club snapshots are approximate; chips, injuries, price-change sell value and official transfer rollover are not modeled.",
+    "The small public-team/past-season dataset limits generalization; compare multiple seasons before relying on policy results."
+  ]
+}

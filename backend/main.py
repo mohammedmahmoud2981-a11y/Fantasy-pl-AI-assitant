@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from fantasyiq.data import load_players
 from fantasyiq.optimizer import optimize_squad
+from fantasyiq.recommender import hybrid_recommendations
 from fantasyiq.prediction import CLASSIFIER_PATH, MODEL_PATH, SOURCE as TRAINING_SOURCE, infer_current_season, predict_next_gameweek
 
 
@@ -30,6 +31,8 @@ _cache_time = 0.0
 _CACHE_TTL_SECONDS = 900
 PROFILE_PATH = Path(__file__).resolve().parents[1] / "reports" / "player_profiles.csv"
 PROFILE_METRICS_PATH = Path(__file__).resolve().parents[1] / "reports" / "player_profile_metrics.json"
+TRANSFER_RL_REPORT_PATH = Path(__file__).resolve().parents[1] / "reports" / "transfer_rl_metrics.json"
+HYBRID_EVAL_REPORT_PATH = Path(__file__).resolve().parents[1] / "reports" / "hybrid_recommender_evaluation.json"
 _prediction_lock = threading.Lock()
 _prediction_cache: pd.DataFrame | None = None
 _prediction_cache_key: tuple | None = None
@@ -146,7 +149,8 @@ def fpl_team(entry_id: int, event: int | None = None):
         raise
     except requests.RequestException as exc:
         raise HTTPException(status_code=502, detail=f"Could not load the FPL team: {exc}") from exc
-    player_ids = [int(row["element"]) for row in picks.get("picks", [])]
+    team_picks = picks.get("picks", [])
+    player_ids = [int(row["element"]) for row in team_picks]
     if len(player_ids) != 15:
         raise HTTPException(status_code=404, detail="This team has no saved 15-player squad for the selected gameweek.")
     players, _, _, _ = get_data()
@@ -155,9 +159,17 @@ def fpl_team(entry_id: int, event: int | None = None):
     pmap = preds.set_index("player_id")["fantasyiq_points"] if not preds.empty else pd.Series(dtype=float)
     squad["fantasyiq_points"] = squad["id"].map(pmap)
     squad["expected_points"] = squad["fantasyiq_points"].fillna(squad["expected_points"])
+    pick_map = {int(row["element"]): row for row in team_picks}
+    squad["squad_order"] = squad["id"].map(lambda player_id: int(pick_map[int(player_id)].get("position", 15)))
+    squad["is_captain"] = squad["id"].map(lambda player_id: bool(pick_map[int(player_id)].get("is_captain", False)))
+    squad["is_vice_captain"] = squad["id"].map(lambda player_id: bool(pick_map[int(player_id)].get("is_vice_captain", False)))
+    squad["multiplier"] = squad["id"].map(lambda player_id: int(pick_map[int(player_id)].get("multiplier", 1)))
     history = picks.get("entry_history", {}).get("bank", entry.get("last_deadline_bank", 0)) / 10
     return {"entry_id": entry_id, "team_name": entry.get("name"), "manager": f"{entry.get('player_first_name','')} {entry.get('player_last_name','')}".strip(),
-            "event": gw, "bank": history, "free_transfers": 1, "players": json_records(squad)}
+            "event": gw, "bank": history, "free_transfers": 1,
+            "captain_id": next((int(row["element"]) for row in team_picks if row.get("is_captain")), None),
+            "vice_captain_id": next((int(row["element"]) for row in team_picks if row.get("is_vice_captain")), None),
+            "players": json_records(squad.sort_values("squad_order"))}
 
 
 @app.get("/api/overview")
@@ -238,6 +250,26 @@ def player_profiles(limit: int = Query(default=30, ge=1, le=500), anomalies_only
     return {"metrics": metrics, "count": min(limit, len(profiles)), "players": json_records(profiles.head(limit))}
 
 
+@app.get("/api/analytics/transfer-policy")
+def transfer_policy_report():
+    if not TRANSFER_RL_REPORT_PATH.exists():
+        raise HTTPException(status_code=503, detail="Transfer-policy evaluation has not been run yet.")
+    try:
+        return json.loads(TRANSFER_RL_REPORT_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail=f"Transfer-policy report could not be read: {exc}") from exc
+
+
+@app.get("/api/analytics/recommender-evaluation")
+def recommender_evaluation():
+    if not HYBRID_EVAL_REPORT_PATH.exists():
+        raise HTTPException(status_code=503, detail="Hybrid recommender evaluation has not been run yet.")
+    try:
+        return json.loads(HYBRID_EVAL_REPORT_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail=f"Recommender evaluation report could not be read: {exc}") from exc
+
+
 @app.get("/api/recommendations/transfers")
 def transfer_recommendations(
     player_id: int = Query(ge=1),
@@ -283,7 +315,10 @@ def transfer_recommendations(
     pool["net_points_gain"] = pool["points_gain"] - pool["transfer_cost"]
     pool["price_difference"] = pool["cost_m"] - current_price
     pool["value_per_million"] = pool["recommendation_points"] / pool["cost_m"].clip(lower=0.1)
-    pool = pool.sort_values(["net_points_gain", "recommendation_points", "value_per_million"], ascending=False).head(limit)
+    pool = hybrid_recommendations(pool, current, limit=limit)
+    if pool.empty:
+        raise HTTPException(status_code=422, detail="No eligible alternatives found for this player.")
+    pool = pool.sort_values(["net_points_gain", "hybrid_score"], ascending=False)
     replacements = pool.drop(columns=["expected_points"]).rename(columns={"recommendation_points": "expected_points"})
     return {
         "current_player": json_records(current_rows)[0],
@@ -341,10 +376,16 @@ def transfer_plan(
     pool = players[players["status"] == "a"].copy()
     pool["fantasyiq_points"] = pool["id"].map(pred)
     pool["high_potential_probability"] = pool["id"].map(prob)
-    pool["plan_points"] = pool["fantasyiq_points"].fillna(pool["expected_points"])
+    # Missing FPL/model projections must not become NaN in transfer gains or
+    # leak into the JSON response (Starlette's JSON encoder rejects NaN).
+    pool["plan_points"] = pd.to_numeric(
+        pool["fantasyiq_points"].fillna(pool["expected_points"]), errors="coerce"
+    ).replace([float("inf"), float("-inf")], pd.NA).fillna(0.0)
     model_ids = set(predictions["player_id"].astype(int)) if not predictions.empty else set()
     pool = pool[(pool["minutes"] >= 90) | pool["id"].isin(model_ids)]
-    current_points = float(squad["id"].map(pred).fillna(squad["expected_points"]).sum())
+    current_points = float(pd.to_numeric(
+        squad["id"].map(pred).fillna(squad["expected_points"]), errors="coerce"
+    ).replace([float("inf"), float("-inf")], pd.NA).fillna(0.0).sum())
     current_cost = float(squad["cost_m"].sum())
     choices = []
     for row in current.itertuples(index=False):
@@ -379,7 +420,7 @@ def transfer_plan(
             if new_id in used or club_counts.get(club, 0) >= 3:
                 continue
             chosen.append({"out": json_records(pd.DataFrame([outgoing._asdict()]))[0],
-                           "in": {key: value for key, value in candidate.items() if key != "plan_points"},
+                           "in": json_records(pd.DataFrame([{key: value for key, value in candidate.items() if key != "plan_points"}]))[0],
                            "points_gain": round(float(candidate["gain"]), 2),
                            "price_difference": round(float(candidate["price_difference"]), 1)})
             used.add(new_id); club_counts[club] = club_counts.get(club, 0) + 1

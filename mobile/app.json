@@ -7,7 +7,7 @@
     "scheme": "fantasyiq",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "backgroundColor": "#07111F",
+    "backgroundColor": "#071A15",
     "plugins": [
       "expo-router"
     ],
@@ -21,7 +21,7 @@
     "android": {
       "package": "com.fantasyiq.mobile",
       "adaptiveIcon": {
-        "backgroundColor": "#07111F",
+        "backgroundColor": "#071A15",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
