@@ -108,6 +108,11 @@ def get_model_predictions(events: list[dict]) -> tuple[pd.DataFrame, int | None]
     return _prediction_cache, target_gw
 
 
+@app.get("/")
+def root():
+    return {"status": "ok", "service": "FantasyIQ API", "health": "/api/health", "docs": "/docs"}
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok", "service": "FantasyIQ API"}
