@@ -3,7 +3,7 @@
   "functions": {
     "backend/main.py": {
       "maxDuration": 60,
-      "excludeFiles": "{data/raw/**,data/processed/next_gw_training.csv,data/processed/next_gw_training.csv.gz,data/processed/player_gameweeks.csv,data/processed/user_player_interactions.csv,data/processed/*.ipynb,mobile/**,scripts/**,.github/**,FantasyIQ_Presentation.pptx,fantasyiq_presentation.html}"
+      "excludeFiles": "{data/raw/**,data/processed/*training*,data/processed/*.csv,data/processed/*.ipynb,mobile/**,scripts/**,.github/**,*.pptx,*.html}"
     }
   }
 }
